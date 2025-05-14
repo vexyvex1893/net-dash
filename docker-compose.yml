@@ -59,15 +59,6 @@ services:
     volumes:
       - graylog_data:/usr/share/graylog/data
 
-  traffic-generator:
-    build:
-      context: .
-      dockerfile: Dockerfile.generator
-    networks:
-      - graylog
-    depends_on:
-      - graylog
-    restart: always
 
   dashboard:
     build:
