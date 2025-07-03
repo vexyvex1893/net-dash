@@ -29,7 +29,6 @@ def fetch_graylog_data(hours=24, query="*"):
         response.raise_for_status()
         data = response.json()
         messages = data.get("messages", [])
-        
         # Process messages to extract fields properly
         records = []
         for msg in messages:
@@ -41,13 +40,10 @@ def fetch_graylog_data(hours=24, query="*"):
                 except:
                     # If it's not JSON, create a simple record
                     message_data = {"message": message_data, "timestamp": msg.get("timestamp")}
-            
             # Add timestamp if available
             if "timestamp" not in message_data and msg.get("timestamp"):
                 message_data["timestamp"] = msg["timestamp"]
-            
             records.append(message_data)
-        
         return pd.DataFrame(records)
     except Exception as e:
         st.error(f"Error fetching data from Graylog: {e}")
