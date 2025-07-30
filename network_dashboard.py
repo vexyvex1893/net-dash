@@ -40,8 +40,13 @@ def fetch_graylog_data():
             'query': '*',
             'range': 86400,  # Last 24 hours
             'limit': 1000,
-            'fields': 'message,source,timestamp'  # Add this line
+            'fields': 'message,source,timestamp'
         }
+        
+        # Debug: Print request details
+        print(f"DEBUG: Making request to {url}")
+        print(f"DEBUG: Params: {params}")
+        print(f"DEBUG: Auth: {GRAYLOG_USERNAME}:{GRAYLOG_PASSWORD}")
         
         response = requests.get(
             url, 
@@ -49,6 +54,12 @@ def fetch_graylog_data():
             auth=(GRAYLOG_USERNAME, GRAYLOG_PASSWORD),
             timeout=10
         )
+        
+        # Debug: Print response details
+        print(f"DEBUG: Response status: {response.status_code}")
+        print(f"DEBUG: Response headers: {dict(response.headers)}")
+        if response.status_code != 200:
+            print(f"DEBUG: Response text: {response.text}")
         
         if response.status_code == 200:
             data = response.json()
